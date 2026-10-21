@@ -75,3 +75,8 @@ Jedan brand može imati više proizvoda.
 ### Lista proizvoda
 
 ![Lista proizvoda](src/main/resources/screenshots/slika2.png)
+
+
+### Korišteni alati
+
+- Jetbrains AI Assistant
