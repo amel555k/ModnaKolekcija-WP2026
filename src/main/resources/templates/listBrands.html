@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brands</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid;
+            padding: 8px 12px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        .product-name {
+            margin-right: 6px;
+        }
+
+        .add-button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/products">Products</a>
+    <a href="/brands">Brands</a>
+</nav>
+
+<h2>Brands</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Date Created</th>
+        <th>Location Count</th>
+        <th>Products</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="b : ${brands}">
+        <td th:text="${b.id}"></td>
+        <td th:text="${b.name}"></td>
+        <td th:text="${b.dateCreated}"></td>
+        <td th:text="${b.locationCount}"></td>
+        <td>
+            <span th:each="p : ${b.products}" th:text="${p.name}" class="product-name"></span>
+
+            <a th:href="@{/brands/{id}/products/add(id=${b.id})}" class="add-button">
+                <button type="button">Dodaj</button>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
