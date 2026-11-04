@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid;
+            padding: 8px 12px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        .add-link {
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/products">Products</a>
+    <a href="/brands">Brands</a>
+    <a href="/categories">Categories</a>
+</nav>
+
+<h2>Categories</h2>
+
+<a href="/categories/add" class="add-link">
+    <button type="button">Dodaj kategoriju</button>
+</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Products</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="c : ${categories}">
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.name}"></td>
+        <td th:text="${c.description}"></td>
+        <td>
+            <span th:each="p, iterStat : ${c.products}">
+                <span th:text="${p.name}"></span><span th:if="${!iterStat.last}">, </span>
+            </span>
+        </td>
+        <td>
+            <a th:href="@{/categories/edit/{id}(id=${c.id})}">
+                <button type="button">Edit</button>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

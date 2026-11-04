@@ -9,7 +9,7 @@
             margin-top: 10px;
         }
 
-        input {
+        input, select {
             display: block;
             padding: 6px;
             margin-top: 4px;
@@ -24,10 +24,11 @@
 <nav>
     <a href="/products">Products</a>
     <a href="/brands">Brands</a>
+    <a href="/categories">Categories</a>
 </nav>
 
 <h2>
-    Dodaj produkt u
+    Add product to
     <span th:text="${brand.name}"></span>
 </h2>
 
@@ -40,6 +41,11 @@
 
     <label for="description">Description</label>
     <input type="text" id="description" name="description" required>
+
+    <label for="categoryId">Category</label>
+    <select id="categoryId" name="categoryId" required>
+        <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+    </select>
 
     <button type="submit">Save</button>
 </form>

@@ -1,61 +1,98 @@
 package data;
 
+import jakarta.annotation.PostConstruct;
 import model.Brand;
+import model.Category;
 import model.Product;
 import org.springframework.stereotype.Component;
+import repository.BrandRepository;
+import repository.CategoryRepository;
+import repository.ProductRepository;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class ShopData {
 
-    private final Map<Long, Brand> brands = new LinkedHashMap<>();
-    private final Map<Long, Product> products = new LinkedHashMap<>();
+    private final BrandRepository brandRepository;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
-    private long brandSeq=1;
-    private long prodSeq=1;
-
-    public ShopData(){
-       Brand seiko =  saveBrand(new Brand(null,"Seiko","1881",310));
-       Brand casio =  saveBrand(new Brand(null,"Casio","1946",290));
-
-       Product seiko5 =  saveProducts(new Product(null,"5",300,"Srebreni"));
-       Product prospex = saveProducts(new Product(null,"Prospex",610,"Crni mat"));
-       Product presage= saveProducts(new Product(null,"Presage",1200,"Najskuplji model"));
-
-       Product gshock= saveProducts(new Product(null,"GSHOCK",300,"zeleni camo"));
-       Product edifice = saveProducts(new Product(null,"EDIFICE",410,"Sportski"));
-
-       seiko.addProduct(seiko5);
-       seiko.addProduct(prospex);
-       seiko.addProduct(presage);
-
-       casio.addProduct(gshock);
-       casio.addProduct(edifice);
+    public ShopData(
+            BrandRepository brandRepository,
+            ProductRepository productRepository,
+            CategoryRepository categoryRepository
+    ) {
+        this.brandRepository = brandRepository;
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
+    @PostConstruct
+    public void init() {
+        if (brandRepository.count() > 0) {
+            return;
+        }
 
+        Brand seiko = new Brand(null, "Seiko", "1881", 310);
+        Brand casio = new Brand(null, "Casio", "1946", 290);
 
-    public List<Brand> findAllBrands(){return new ArrayList<>(brands.values())  ;}
-    public Brand findBrand(Long id){return brands.get(id);}
+        Category classic = saveCategory(new Category(null, "Classic", "Klasični satovi"));
+        Category sport = saveCategory(new Category(null, "Sport", "Sportski satovi"));
+        Category luxury = saveCategory(new Category(null, "Luxury", "Luksuzni satovi"));
+        Category digital = saveCategory(new Category(null, "Digital", "Digitalni satovi"));
 
-    public Brand saveBrand(Brand b){
-        if(b.getId()==null) b.setId(brandSeq++);
-        brands.put(b.getId(),b);
-        return b;
+        Product seiko5 = new Product(null, "5", 300, "Srebreni", classic);
+        Product prospex = new Product(null, "Prospex", 610, "Crni mat", sport);
+        Product presage = new Product(null, "Presage", 1200, "Najskuplji model", luxury);
+
+        Product gshock = new Product(null, "GSHOCK", 300, "Zeleni camo", digital);
+        Product edifice = new Product(null, "EDIFICE", 410, "Sportski", sport);
+
+        seiko.addProduct(seiko5);
+        seiko.addProduct(prospex);
+        seiko.addProduct(presage);
+
+        casio.addProduct(gshock);
+        casio.addProduct(edifice);
+
+        saveBrand(seiko);
+        saveBrand(casio);
     }
 
-    public List<Product> findAllProducts(){return new ArrayList<>(products.values())  ;}
-    public Product findProducts(Long id){return products.get(id);}
-
-    public Product saveProducts(Product p){
-        if(p.getId()==null) p.setId(prodSeq++);
-        products.put(p.getId(),p);
-        return p;
+    public List<Brand> findAllBrands() {
+        return brandRepository.findAll();
     }
 
+    public Brand findBrand(Long id) {
+        return brandRepository.findById(id).orElse(null);
+    }
 
+    public Brand saveBrand(Brand brand) {
+        return brandRepository.save(brand);
+    }
+
+    public List<Product> findAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public Product findProducts(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
+    public Product saveProducts(Product product) {
+        return productRepository.save(product);
+    }
+
+    public List<Category> findAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    public Category findCategory(Long id) {
+        return categoryRepository.findById(id).orElse(null);
+    }
+
+    public Category saveCategory(Category category) {
+        return categoryRepository.save(category);
+    }
 }

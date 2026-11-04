@@ -1,15 +1,32 @@
 package model;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Brand {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String dateCreated;
     private int locationCount;
 
-    public Brand(){}
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Product> products = new ArrayList<>();
+
+    public Brand() {
+    }
 
     public Brand(Long id, String name, String dateCreated, int locationCount) {
         this.id = id;
@@ -18,13 +35,13 @@ public class Brand {
         this.locationCount = locationCount;
     }
 
-    private List<Product> products = new ArrayList<>();
-
+    public Long getId() {
+        return id;
+    }
 
     public void setId(Long id) {
         this.id = id;
     }
-    public Long getId(){return id;}
 
     public String getName() {
         return name;
@@ -50,16 +67,22 @@ public class Brand {
         this.locationCount = locationCount;
     }
 
-    public List<Product> getProducts(){ return products;}
+    public List<Product> getProducts() {
+        return products;
+    }
 
-    public boolean canAddProduct(){ return products.size()<5;}
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
-    public void addProduct(Product p){
-        if (canAddProduct()){
-            products.add(p);
+    public boolean canAddProduct() {
+        return products.size() < 5;
+    }
+
+    public void addProduct(Product product) {
+        if (canAddProduct()) {
+            products.add(product);
+            product.setBrand(this);
         }
     }
 }
-
-
-

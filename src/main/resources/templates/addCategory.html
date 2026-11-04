@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<nav>
+    <a href="/products">Products</a>
+    <a href="/brands">Brands</a>
+    <a href="/categories">Categories</a>
+</nav>
+
+<h2>Add Category</h2>
+
+<form action="/categories/add" method="post">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="description">Description</label>
+    <input type="text" id="description" name="description" required>
+
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>

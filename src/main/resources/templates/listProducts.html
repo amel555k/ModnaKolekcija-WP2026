@@ -22,6 +22,7 @@
 <nav>
     <a href="/products">Products</a>
     <a href="/brands">Brands</a>
+    <a href="/categories">Categories</a>
 </nav>
 
 <h2>Products</h2>
@@ -33,6 +34,7 @@
         <th>Name</th>
         <th>Price</th>
         <th>Description</th>
+        <th>Category</th>
     </tr>
     </thead>
 
@@ -42,6 +44,7 @@
         <td th:text="${p.name}"></td>
         <td th:text="${p.price}"></td>
         <td th:text="${p.description}"></td>
+        <td th:text="${p.category != null ? p.category.name : 'Nema kategorije'}"></td>
     </tr>
     </tbody>
 </table>
